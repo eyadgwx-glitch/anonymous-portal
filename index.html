@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Anonymous Portal</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  background: #111;
+  border: 1px solid #292929;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 25px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.line {
+  height: 1px;
+  background: #292929;
+  margin: 25px 0;
+}
+
+.notice {
+  background: #191919;
+  border-radius: 10px;
+  padding: 15px;
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.8;
+  text-align: right;
+}
+
+input[type=file] {
+  width: 100%;
+  margin: 20px 0;
+  padding: 13px;
+  background: #1c1c1c;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 8px;
+}
+
+.agree {
+  display: flex;
+  gap: 10px;
+  text-align: right;
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+#status {
+  color: #aaa;
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+footer {
+  color: #555;
+  font-size: 11px;
+  margin-top: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>ANONYMOUS PORTAL</h1>
+
+  <p class="subtitle">
+    بوابة مشاركة الملفات
+  </p>
+
+  <div class="line"></div>
+
+  <div class="notice">
+    يمكنك اختيار الصور والفيديوهات والمستندات
+    التي ترغب بمشاركتها.
+    لن يتم الوصول إلى أي ملف دون اختيارك.
+  </div>
+
+  <form id="uploadForm">
+
+    <input
+      type="file"
+      id="files"
+      multiple
+      accept="image/*,video/*,.pdf,.doc,.docx"
+    >
+
+    <label class="agree">
+      <input type="checkbox" id="consent">
+      أوافق على مشاركة الملفات التي اخترتها.
+    </label>
+
+    <button type="submit" id="send" disabled>
+      تأكيد المشاركة
+    </button>
+
+  </form>
+
+  <p id="status"></p>
+
+  <footer>
+    ANONYMOUS PORTAL
+  </footer>
+
+</div>
+
+<script>
+const files = document.getElementById("files");
+const consent = document.getElementById("consent");
+const send = document.getElementById("send");
+const status = document.getElementById("status");
+
+function updateButton() {
+  send.disabled = !(
+    consent.checked && files.files.length > 0
+  );
+}
+
+files.addEventListener("change", updateButton);
+consent.addEventListener("change", updateButton);
+
+document.getElementById("uploadForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!consent.checked || files.files.length === 0) {
+    return;
+  }
+
+  status.textContent =
+    "تم اختيار " + files.files.length +
+    " ملف. هذه نسخة تجريبية ولا يتم رفع الملفات إلى خادم.";
+
+});
+</script>
+
+</body>
+</html>
