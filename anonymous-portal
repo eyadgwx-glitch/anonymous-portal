@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Anonymous Portal</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #080808;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  background: #111;
+  border: 1px solid #292929;
+  padding: 30px;
+  border-radius: 15px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.accept {
+  background: #e5e5e5;
+  color: #080808;
+}
+
+.reject {
+  background: #252525;
+  color: white;
+  border: 1px solid #444;
+}
+
+#filesArea {
+  display: none;
+  margin-top: 25px;
+}
+
+input[type=file] {
+  width: 100%;
+  color: white;
+  padding: 12px;
+  background: #202020;
+  border-radius: 8px;
+}
+
+#status {
+  color: #bbb;
+  text-align: center;
+  font-size: 13px;
+  margin-top: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="buttons" id="choice">
+    <button class="accept" onclick="acceptConsent()">
+      موافق
+    </button>
+
+    <button class="reject" onclick="rejectConsent()">
+      رفض
+    </button>
+  </div>
+
+  <div id="filesArea">
+    <input
+      type="file"
+      id="files"
+      multiple
+      accept="image/*,video/*,.pdf,.doc,.docx"
+    >
+
+    <p id="status"></p>
+  </div>
+
+</div>
+
+<script>
+function acceptConsent() {
+  document.getElementById("choice").style.display = "none";
+  document.getElementById("filesArea").style.display = "block";
+}
+
+function rejectConsent() {
+  document.getElementById("choice").style.display = "none";
+  document.getElementById("filesArea").style.display = "none";
+}
+
+document.getElementById("files").addEventListener("change", function() {
+  const count = this.files.length;
+
+  document.getElementById("status").textContent =
+    count > 0
+      ? "تم اختيار " + count + " ملف. لم يتم إرسالها."
+      : "";
+});
+</script>
+
+</body>
+</html>
