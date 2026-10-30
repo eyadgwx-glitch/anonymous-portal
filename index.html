@@ -3,8 +3,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
 <title>Anonymous Portal</title>
+
 <style>
 * { box-sizing: border-box; }
 
@@ -12,39 +14,39 @@ body {
   margin: 0;
   min-height: 100vh;
   background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
 .container {
-  width: 90%;
-  max-width: 400px;
-  padding: 30px;
+  width: 100%;
+  max-width: 420px;
   background: #111;
-  border: 1px solid #292929;
+  border: 1px solid #333;
   border-radius: 15px;
+  padding: 28px;
+  text-align: center;
 }
 
-.buttons {
-  display: flex;
-  gap: 12px;
-}
+h2 { letter-spacing: 2px; }
 
 button {
-  flex: 1;
-  padding: 15px;
+  width: 100%;
+  padding: 14px;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
   cursor: pointer;
+  font-weight: bold;
+  margin-top: 12px;
 }
 
 .accept {
-  background: #eee;
-  color: #080808;
+  background: white;
+  color: black;
 }
 
 .reject {
@@ -52,54 +54,91 @@ button {
   color: white;
 }
 
-#filesArea {
-  display: none;
-  margin-top: 25px;
-}
+#details { display: none; }
 
 input {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 7px;
+  border: 1px solid #444;
+  background: #1c1c1c;
   color: white;
-  max-width: 100%;
+}
+
+.notice {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.8;
 }
 
 #status {
   color: #aaa;
-  text-align: center;
   font-size: 13px;
+  line-height: 1.8;
 }
 </style>
 </head>
-<body>
 
+<body>
 <div class="container">
 
-  <div class="buttons" id="choice">
-    <button class="accept" onclick="acceptConsent()">موافق</button>
-    <button class="reject" onclick="rejectConsent()">رفض</button>
+  <div id="choice">
+    <h2>ANONYMOUS PORTAL</h2>
+    <button class="accept" onclick="accept()">موافق</button>
+    <button class="reject" onclick="reject()">رفض</button>
   </div>
 
-  <div id="filesArea">
-    <input type="file" id="files" multiple accept="image/*,video/*,.pdf,.doc,.docx">
+  <div id="details">
+    <h3>مشاركة الملفات</h3>
+
+    <p class="notice">
+      اكتب اسمك واختر الملفات التي تريد مشاركتها.
+      لن يتم إرسال أي ملف دون موافقتك.
+    </p>
+
+    <input id="name" type="text" placeholder="اكتب اسمك">
+
+    <input
+      id="files"
+      type="file"
+      multiple
+      accept="image/*,video/*,.pdf,.doc,.docx"
+    >
+
+    <button class="accept" onclick="confirmShare()">
+      تأكيد الاختيار
+    </button>
+
     <p id="status"></p>
   </div>
 
 </div>
 
 <script>
-function acceptConsent() {
+function accept() {
   document.getElementById("choice").style.display = "none";
-  document.getElementById("filesArea").style.display = "block";
+  document.getElementById("details").style.display = "block";
 }
 
-function rejectConsent() {
+function reject() {
   document.getElementById("choice").style.display = "none";
-  document.getElementById("filesArea").style.display = "none";
 }
 
-document.getElementById("files").addEventListener("change", function() {
-  document.getElementById("status").textContent =
-    "تم اختيار " + this.files.length + " ملف. لم يتم إرسالها.";
-});
+function confirmShare() {
+  const name = document.getElementById("name").value.trim();
+  const files = document.getElementById("files").files;
+  const status = document.getElementById("status");
+
+  if (!name || files.length === 0) {
+    status.textContent = "اكتب اسمك واختر الملفات أولاً.";
+    return;
+  }
+
+  status.textContent =
+    "تم اختيار " + files.length +
+    " ملف. هذه نسخة تجريبية ولا يتم رفع الملفات.";
+}
 </script>
 
 </body>
